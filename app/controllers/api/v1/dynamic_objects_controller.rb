@@ -14,12 +14,12 @@ class Api::V1::DynamicObjectsController < ApplicationController
         if field.save
           render json: @object,status: :ok
         else
-          render json: "Some thing went wrong" ,status: :unprocessable_entity
+          render json: field.errors ,status: :unprocessable_entity
         end
 
       end
     else
-      render json: "Specification or fields is required" ,status: :unprocessable_entity
+      render json: "Specification or fields is required".to_json ,status: :unprocessable_entity
     end
   end
   private
