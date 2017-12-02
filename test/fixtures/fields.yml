@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  key: MyString
+  input_type: MyString
+  required: false
+  options: MyText
+
+two:
+  key: MyString
+  input_type: MyString
+  required: false
+  options: MyText
