@@ -5,7 +5,7 @@ class CreateFields < ActiveRecord::Migration
       t.string :input_type
       t.boolean :required
       t.text :options
-
+      t.references :specification
       t.timestamps null: false
     end
   end
