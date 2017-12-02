@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Rent-A-Thon</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">-->
+    <!--<link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">-->
+    <link rel="stylesheet" href="angularjs/views/app.css">
+    <!--<script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>-->
+    <script src="angularjs/node_modules/angular/angular.js"></script>
+    <script src="angularjs/node_modules/angular-route/angular-route.js"></script>
+    <link rel="stylesheet" href="angularjs/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="angularjs/node_modules/jquery/dist/jquery.js"></script>
+    <script src="angularjs/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="angularjs/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+    <script src="angularjs/views/app.js"></script>
+
+</head>
+<body>
+<style>
+    .modal-dialog{
+        width:90%;
+    }
+    </style>
+<!--[if lt IE 7]>
+    <!--<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>-->
+<!--[endif]-->
+
+<!--<div ng-view></div>-->
+
+
+<div class="container" ng-controller="mainCtrl">
+    <div class="row">
+        <div class="panel panel-default" style="padding:1em; margin:1em;">
+            <div class="panel-heading" ng-repeat-start="l in list">{{l}} Heading</div>
+            <div class="panel-body" ng-repeat-end>{{l}} This is body</div>
+        </div>
+        </div>
+
+
+    <button class="btn btn-primary" ng-click="openModal()"> Open Modal</button>
+    </div>
+
+
+<script type="text/ng-template" id="myModalContent.html">
+
+
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <h3>Add Object</h3>
+                </div>
+
+               <div class="modal-body">
+            <!-- FORM -->
+            <!-- pass in the variable if our form is valid or invalid -->
+             <div class="container-fluid">
+            <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate> <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+
+                <!-- NAME -->
+                <div class="row" style="  padding-bottom:2%;">
+                    <div class="col-md-2">
+                    <label>Name</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" name="name" ng-model="item.name" class="form-control" ng-model="name" required>
+                    </div>
+                </div>
+
+                <!-- USERNAME -->
+                <div class="row">
+                    <div class = "col-md-2"  >
+                        <img src="{{item.icon}}" style="border: 2px solid black;" alt="no image" height="100" width="100"/>
+                    </div>
+                    <div class = "col-md-4">
+                        <input type="file" style="padding-bottom: 2%;">
+                        <input class="btn btn-warning btn-sm" type="button" value="Upload"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10">
+                        <h2>Specifications:  </h2>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary"><span class="glyphicon glyphicon-plus" ng-click="addSpec()"></span> Add Specifications </button>
+                    </div>
+
+                </div>
+
+                <table class="table table-responsive table-bordered">
+                    <thead>
+                    <th>S no.</th>
+                    <th>Key</th>
+                    <th>Data Spec Type</th>
+                    <th colspan=2>Is Required ?</th>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat-start="spec in item.specs">
+                    <tr>
+                        <td style="width:8%;">{{$index}}</td>
+                        <td><input type="text" class="form-control" ng-model="spec.key"/></td>
+                        <td><div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                {{selected_spec_type}}
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li ng-repeat="type in specTypes" ng-click="specTypeSelected(type)"><a>{{type}}</a></li>
+                            </ul>
+                        </div>
+
+                        </td>
+                        <td  colspan=2><input type="checkbox" ng-model="spec.required" value="{{spec.required}}"></td>
+
+                    <tr style="padding:3em;" >
+                        <!--<div ng-repeat-start="option in specs.options">-->
+                        <td style="width:8%;">{{$index}}</td>
+                        <td><input type="text" class="form-control" ng-model="option.key"/></td>
+                        <td ><div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu_mini" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                {{selected_option_type}}
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li ng-repeat="type in optiontypes" ng-click="optionTypeSelected(type)"><a>{{type}}</a></li>
+                            </ul>
+                        </div></td>
+                        <td  colspan=2>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control"  ng-model="option.value"/>
+                                </div>
+                                <div ng-repeat-end class="col-md-4">
+                                    <input type="button" value="Push" class="btn btn-sm btn-primary col-lg-pull-0">
+                                </div>
+                            </div>
+                            <ul>
+                                <li>Male</li>
+                                <li>Female</li>
+                            </ul>
+
+                        </td>
+                        </div>
+                    </tr>
+                    </tr>
+                    <tr ng-repeat-end>
+                        <td colspan=4>   <input type="button" value="Add Option" class="btn btn-sm btn-primary pull-right"></td>
+                        </td>
+                    </tr>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+        </form>
+             </div>
+               </div>
+
+             <div class="modal-footer">
+
+        <!-- SUBMIT BUTTON -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+        </div>
+    </div>
+
+</script>
+
+</body>
+</html>

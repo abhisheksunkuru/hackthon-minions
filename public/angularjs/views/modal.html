@@ -1,0 +1,115 @@
+<div class="container" ng-controller = "ModalCtrl">
+    <div class="col-sm-8 col-sm-offset-2">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header"><h1>AngularJS Form</h1></div>
+
+        <!-- FORM -->
+        <!-- pass in the variable if our form is valid or invalid -->
+        <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate> <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+
+            <!-- NAME -->
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" name="name" class="form-control" ng-model="name" required>
+            </div>
+
+            <!-- USERNAME -->
+            <div class="row">
+                <div class = "col-md-4">
+                    <ing src="/data.jpg"/>
+                </div>
+                <div class = "col-md-4">
+                    <input type="file">
+                </div>
+                <div class = "col-md-4">
+                    <input type="button" value="Button"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-10">
+                    <h2>Specifications:  </h2>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add Specifications </button>
+                </div>
+
+            </div>
+
+            <table class="table table-responsive table-bordered">
+                <thead>
+                <th>S no.</th>
+                <th>Key</th>
+                <th>Data Spec Type</th>
+                <th colspan=2>Is Required ?</th>
+                </thead>
+                <tbody>
+                <tr >
+                <tr>
+                    <td style="width:8%;">1.</td>
+                    <td><input type="text" class="form-control" /></td>
+                    <td><div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Subject
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="#">Physics</a></li>
+                            <li><a href="#">Math</a></li>
+                            <li><a href="#">Chemistry</a></li>
+                            <li><a href="#">Hindi</a></li>
+                        </ul>
+                    </div>
+
+                    </td>
+                    <td  colspan=2><input type="radio" >
+
+                <tr style="padding:3em;">
+
+                    <td style="width:8%;"></td>
+                    <td><input type="text" class="form-control" /></td>
+                    <td ><div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Items
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="#">Physics</a></li>
+                            <li><a href="#">Math</a></li>
+                            <li><a href="#">Chemistry</a></li>
+                            <li><a href="#">Hindi</a></li>
+                        </ul>
+                    </div></td>
+                    <td  colspan=2>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <input type="text" class="form-control"/>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="button" value="Push" class="btn btn-sm btn-primary pull-right">
+                            </div>
+                        </div>
+                        <ul>
+                            <li>Male</li>
+                            <li>Female</li>
+                        </ul>
+
+                    </td>
+                </tr>
+                </tr>
+                <tr><td colspan=4>   <input type="button" value="Add Option" class="btn btn-sm btn-primary pull-right"></td>
+                    </td></tr>
+                </tr>
+
+                </tbody>
+            </table>
+    </div>
+
+    <!-- SUBMIT BUTTON -->
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+
+</div><!-- col-sm-8 -->
+</div><!-- /container -->
