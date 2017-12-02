@@ -37,14 +37,69 @@
 
 <div class="container" ng-controller="mainCtrl">
     <div class="row">
-        <div class="panel panel-default" style="padding:1em; margin:1em;">
-            <div class="panel-heading" ng-repeat-start="l in list">{{l}} Heading</div>
-            <div class="panel-body" ng-repeat-end>{{l}} This is body</div>
-        </div>
+        <div class="panel panel-info " style="padding: 2%;">
+
+            <div class="panel-heading" ng-repeat-start="item in dlist">
+                <div class="row" style="  padding-bottom:2%; ">
+                    <div class="col-md-1">
+                        {{$index+1}}
+                    </div>
+                    <div class = "col-md-4"  >
+                        <img src="{{item.icon}}" style="border: 2px solid black;" alt="no image" height="100" width="100"/>
+                    </div>
+
+                    <div class="col-md-7">
+                        <input type="text" name="name" ng-model="item.name" class="form-control">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="panel-body" style="border: 1px solid cadetblue" ng-repeat-end>
+                        <h3>Specifications</h3>
+                    <div ng-repeat-start="fields in item.specification.fields" class="row">
+                        <hr/>
+                        <div class="form-group">
+                            <label class=" col-md-2" style="display: inline-block">{{$index+1}}</label>
+                            <label class=" col-md-5" style="display: inline-block">Key</label>
+                                <span class="col-md-1"> =></span>
+                                <label class=" col-md-4" style="display: inline-block">{{fields.key}}</label>
+
+                                <div class="container-fluid">
+                                <label>Type of Input : =></label>
+                                <label>{{fields.input_type}}</label>
+                            <label style="color: #730E15 " ng-if="fields.required ? true :false"><sup>required</sup></label>
+                                </div>
+                            <!--<input type="text" ng-if="fields.input_type == 'input_text'"/>-->
+                            <!--<input type="radio" ng-if="fields.input_type == 'radio_button'"/>-->
+                            <!--<input type="file" ng-if="fields.input_type == 'file_upload'"/>-->
+
+                            <!--<div class="dropdown" ng-if="fields.input_type == 'dropdown'" style="display: inline-block">-->
+                                <!--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu-value" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
+                                    <!--{{fields.input_type}}-->
+                                    <!--<span class="caret"></span>-->
+                                <!--</button>-->
+                                <!--<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">-->
+                                    <!--<li ng-repeat="type in specTypes" ><a>{{type}}</a></li>-->
+                                <!--</ul>-->
+                            <!--</div>-->
+
+                        </div>
+                    </div>
+                        <div ng-repeat-end>
+                            <ul >
+                                <li ng-repeat="f in fields.options.values track by $index">{{f}}</li>
+                            </ul>
+                        </div>
+
+        <hr/>
+            </div>
+
         </div>
 
 
-    <button class="btn btn-primary" ng-click="openModal()"> Open Modal</button>
+        <button class="btn btn-primary" ng-click="openModal()"><span class="glyphicon glyphicon-plus"></span>Add Data</button>
     </div>
 
 
@@ -88,7 +143,7 @@
                         <h2>Specifications:  </h2>
                     </div>
                     <div class="col-md-2">
-                        <button class="btn btn-primary"><span class="glyphicon glyphicon-plus" ng-click="addSpec()"></span> Add Specifications </button>
+                        <button class="btn btn-primary" ng-click="addSpec(item)"><span class="glyphicon glyphicon-plus" ></span> Add Specifications </button>
                     </div>
 
                 </div>
@@ -101,13 +156,13 @@
                     <th colspan=2>Is Required ?</th>
                     </thead>
                     <tbody>
-                    <tr ng-repeat-start="spec in item.specs">
+                    <tr ng-repeat-start="spec in item.specification.fields">
                     <tr>
                         <td style="width:8%;">{{$index}}</td>
-                        <td><input type="text" class="form-control" ng-model="spec.key"/></td>
+                        <td><input type="text" class="form-control"  ng-model="spec.key"/></td>
                         <td><div class="dropdown">
                             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                {{selected_spec_type}}
+                                {{spec.input_type}}
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -118,9 +173,9 @@
                         </td>
                         <td  colspan=2><input type="checkbox" ng-model="spec.required" value="{{spec.required}}"></td>
 
-                    <tr style="padding:3em;" >
+                    <tr ng-repeat="option in spec.options track by $index" style="padding:3em;">
                         <!--<div ng-repeat-start="option in specs.options">-->
-                        <td style="width:8%;">{{$index}}</td>
+                        <td style="width:8%;"><span class="pull-right" ng-init="optionTypename(option)">{{$index}} </span></td>
                         <td><input type="text" class="form-control" ng-model="option.key"/></td>
                         <td ><div class="dropdown">
                             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu_mini" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -128,29 +183,27 @@
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li ng-repeat="type in optiontypes" ng-click="optionTypeSelected(type)"><a>{{type}}</a></li>
+                                <li ng-repeat="type in optionTypes" ng-click="optionTypeSelected(type)"><a>{{type}}</a></li>
                             </ul>
                         </div></td>
                         <td  colspan=2>
                             <div class="row">
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control"  ng-model="option.value"/>
+                                    <input type="text" class="form-control"  ng-model="options.value"/>
                                 </div>
-                                <div ng-repeat-end class="col-md-4">
+                                <div  class="col-md-4">
                                     <input type="button" value="Push" class="btn btn-sm btn-primary col-lg-pull-0">
                                 </div>
                             </div>
-                            <ul>
-                                <li>Male</li>
-                                <li>Female</li>
+                            <ul ng-repeat="o in options.values track by $index">
+                                <li>{{o}}</li>
                             </ul>
 
                         </td>
-                        </div>
                     </tr>
                     </tr>
                     <tr ng-repeat-end>
-                        <td colspan=4>   <input type="button" value="Add Option" class="btn btn-sm btn-primary pull-right"></td>
+                        <td colspan=4 ng-repeat-end>   <input type="button" value="Add Option" class="btn btn-sm btn-primary pull-right"></td>
                         </td>
                     </tr>
                     </tr>

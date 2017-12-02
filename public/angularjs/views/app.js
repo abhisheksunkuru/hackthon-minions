@@ -6,20 +6,77 @@ angular.module('myApp', [
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
     $locationProvider.hashPrefix('!');
-}]).controller("mainCtrl",[ '$scope','$uibModal',function ($scope,$uibModal) {
+}]).controller("mainCtrl",[ '$scope','$uibModal','$http',function ($scope,$uibModal,$http) {
+
+    $scope.specTypes  = ['Input Box','Radio Button','DropDown','File upload'];
+
+
+    $http({
+        method : "GET",
+        url : "http://localhost:3000/api/v1/dynamic_objects"
+    }).then(function mySuccess(response) {
+        // $scope.myWelcome = response.data;
+        console.log(response);
+    }, function myError(response) {
+        // $scope.myWelcome = response.statusText;
+        console.log(response);
+
+    });
+
+
+
+    $scope.fieldvalue = function (value) {
+    $scope.v  = [];
+        angular.forEach(value,function (key,value) {
+            v.put(key,value);
+        });
+    };
 
     $scope.dlist = [
         {
             "name": "Person",
-            "icon" : "",
-            "specification":{
-                "fields":[
-
+            "icon": "/data.jpg",
+            "specification": {
+                "fields": [
+                    {
+                        "key": "name",
+                        "input_type": "text_field",
+                        "required": false,
+                        "options": {}
+                    },
+                    {
+                        "key": "material status",
+                        "input_type": "dropdown",
+                        "required": true,
+                        "options": {
+                            "values": ["single", "married"]
+                        }
+                    }
                 ]
             }
-
+        },
+        {
+            "name": "Person 1",
+            "icon": "/data.jpg",
+            "specification": {
+                "fields": [
+                    {
+                        "key": "name",
+                        "input_type": "text_field",
+                        "required": false,
+                        "options": {}
+                    },
+                    {
+                        "key": "material status",
+                        "input_type": "file_uploads",
+                        "required": true,
+                        "options": {
+                            "values": ["jpeg", "png"]
+                        }
+                    }
+                ]
+            }
         }
-
 
     ];
 
@@ -59,7 +116,7 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
 
     $scope.item = {
         "name":"Person",
-        "icon":"",
+        "icon":"/data.jpg",
         "specification":{
             "fields":[
                 {
@@ -71,7 +128,7 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
                 {
                     "key":"material status",
                     "input_type":"dropdown",
-                    "required":false,
+                    "required":true,
                     "options":{
                         "values":["single","married"]
                     }
@@ -82,16 +139,26 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
     };
 
 
-    var addSpecification = function (key,data_spec,required) {
-      this.key = key;
-      this.data_spec = data_spec;
-      this.required = required;
-
+    var addSpecification = function (item) {
+      item.specification.fields.key = "";
+      item.specification.fields.data_spec = "";
+      item.specification.fields.required = false;
+      item.specification.fields.options = [];
     };
 
+    var addOptions = function (value) {
+    };
 
-    $scope.selected_spec_type = "spec_type";
-    $scope.selected_option_type = "option_type";
+            $scope.addSpec = function (item) {
+                item.specification.fields.push(new addSpecification(item));
+            };
+
+            $scope.addOptions = function (item) {
+                item.specification.fields.push(new addSpecification(item));
+            };
+
+    // $scope.selected_spec_type = "spec_type";
+    // $scope.selected_option_type = "option_type";
 
     $scope.specTypes  = ['Input Box','Radio Button','DropDown','File upload'];
     $scope.optionTypes = ['Single value','Multiple Value'];
@@ -105,6 +172,17 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
         $scope.optionTypes = optiontype;
     };
 
+    $scope.specTypename = function (specType) {
+        $scope.selected_spec_type = specType.input_type;
+    };
+
+    $scope.optionTypename = function (optiontype) {
+        if(Array.isArray(optiontype))
+        $scope.selected_option_type ="Multiple Value";
+        else
+        $scope.selected_option_type ="Single Value";
+
+    };
     $scope.ok = function () {
         $uibModalInstance.close();
     };
