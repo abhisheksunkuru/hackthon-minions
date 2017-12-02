@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171202074949) do
+ActiveRecord::Schema.define(version: 20171202123939) do
+
+  create_table "data_types", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "dynamic_objects", force: :cascade do |t|
     t.string   "name"
@@ -25,13 +31,15 @@ ActiveRecord::Schema.define(version: 20171202074949) do
     t.string   "input_type"
     t.boolean  "required"
     t.text     "options"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "specification_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   create_table "specifications", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "dynamic_object_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
 end
